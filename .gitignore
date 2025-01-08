@@ -1,0 +1,17 @@
+# Pliki środowiska wirtualnego
+venv/
+.venv/
+__pycache__/
+*.pyc
+
+# Pliki bazy danych
+*.db
+
+# Klucze i konfiguracje
+instance/
+.env
+
+# Pliki IDE/edytorów
+.vscode/
+.idea/
+*.swp
