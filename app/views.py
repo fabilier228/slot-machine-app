@@ -7,7 +7,7 @@ main = Blueprint('main', __name__)
 @main.route('/users', methods=['POST'])
 def create_user():
     data = request.json
-    new_user = User(username=data['username'], password=data['password'])  # Hasło powinno być zaszyfrowane
+    new_user = User(username=data['username'], password=data['password'])
     db.session.add(new_user)
     db.session.commit()
     return jsonify({'message': 'User created'}), 201
@@ -25,7 +25,3 @@ def log_game():
     db.session.commit()
     return jsonify({'message': 'Game log created'}), 201
 
-# Dodaj endpointy do UPDATE, DELETE i wyszukiwania
-@main.route('/', methods=['GET'])
-def index():
-    return render_template('index.html')
