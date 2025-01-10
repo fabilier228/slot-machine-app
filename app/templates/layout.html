@@ -5,13 +5,37 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>{% block title %}Slot Machine{% endblock %}</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style1.css') }}">
 </head>
 <body>
 <header>
     <h1>Welcome to the Slot Machine Game</h1>
 </header>
 
+<!-- Flash Messages -->
+{% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        {% for category, message in messages %}
+            {% if category == "error" %}
+                <div class="flash-alert-error" role="alert">
+                    {{ message }}
+                    <button type="button" class="alert-button">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            {% else %}
+                <div class="flash-alert-success" role="alert">
+                    {{ message }}
+                    <button type="button" class="alert-button">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+{% endwith %}
+
+<!-- Main Content -->
 <div class="content">
     {% block content %}{% endblock %}
 </div>
@@ -19,6 +43,7 @@
 <footer>
     <p>&copy; {{ current_year }} Slot Machine Inc. All rights reserved.</p>
 </footer>
+
 <script type="text/javascript" src="{{ url_for('static', filename='index.js') }}"></script>
 </body>
 </html>
