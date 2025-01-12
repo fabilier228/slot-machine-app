@@ -3,32 +3,28 @@
     GAMBLING
 {% endblock %}
 {% block content %}
-    <div class="display-result">
-
-    </div>
+    <div class="display-result"></div>
     <div id="app">
-    <div class="cost-info">15$ SPIN</div>
-  <div class="doors">
-    <div class="door">
-      <div class="boxes">
-      </div>
+        <div class="cost-info">
+            <label for="stake-input">Enter your stake:</label>
+            <input type="number" id="stake-input" value="1" min="1" />
+            <label> $ per spin</label>
+        </div>
+        <div class="doors">
+            <div class="door">
+                <div class="boxes"></div>
+            </div>
+            <div class="door">
+                <div class="boxes"></div>
+            </div>
+            <div class="door">
+                <div class="boxes"></div>
+            </div>
+        </div>
+
+        <div class="buttons">
+            <button id="spinner">Spin</button>
+            <button id="reseter">Reset</button>
+        </div>
     </div>
-
-    <div class="door">
-      <div class="boxes">
-      </div>
-    </div>
-
-    <div class="door">
-      <div class="boxes">
-      </div>
-    </div>
-  </div>
-
-  <div class="buttons">
-    <button id="spinner">Spin</button>
-    <button id="reseter">Reset</button>
-  </div>
-
-</div>
 {% endblock %}

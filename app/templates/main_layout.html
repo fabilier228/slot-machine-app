@@ -14,23 +14,23 @@
     <nav class="navbar">
         <div class="navbar-left">
             <!-- Logout button -->
-                <button type="submit" class="btn-logout"><a href="/logout">Logout</a></button>
+                <span class="saldo-display">Saldo: ${{ saldo }}</span>
                 <span class="people-display"> Online: {{ online_people }} people</span>
         </div>
 
-        <div class="bonus-section">
-          <button id="collect-bonus" class="bonus-btn">Collect $300 Bonus</button>
-          <p class="bonus-info"></p>
-        </div>
+        <div><button class="go-gaming"><a href="/main">SLUGGER TIME !!!!!</a></button></div>
 
         <div class="navbar-right">
-            <!-- Display current saldo -->
-            <span class="saldo-display">Saldo: ${{ saldo }}</span>
-
-            <!-- Profile icon that links to the profile page -->
-            <a class="profile-ref" href="/profile">
-                💀
-            </a>
+            <div class="loggings">
+                <button type="submit" class="btn-logout"><a href="/logout">Logout</a></button>
+                <a class="profile-ref" href="/profile">
+                    <img src="../static/public/profile.webp" alt="nice profile pic" class="ref-profile">
+                </a>
+            </div>
+            <div class="bonus-section">
+              <button id="collect-bonus" class="bonus-btn">Collect $300 Bonus</button>
+              <p class="bonus-info"></p>
+            </div>
         </div>
     </nav>
 </header>
@@ -38,7 +38,7 @@
 <div class="content">
     {% block content %}{% endblock %}
 </div>
-<script src="../static/js/script.js"></script>
 <script src="../static/js/index.js"></script>
+<script src="../static/js/script.js"></script>
 </body>
 </html>
