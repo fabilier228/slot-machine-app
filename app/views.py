@@ -95,19 +95,20 @@ def update_saldo():
 @views.route('/collect_bonus', methods=['POST'])
 @login_required
 def collect_bonus():
-    user_id = current_user.id
     now = datetime.now()
 
-    last_collected = bonus_collection_times.get(user_id)
-    if last_collected and now - last_collected < timedelta(hours=12):
-        remaining_time = last_collected + timedelta(hours=12) - now
-        return jsonify(success=False, message=f"Bonus available in {remaining_time}.")
+    if current_user.last_bonus_collected and now - current_user.last_bonus_collected < timedelta(hours=12):
+        remaining_time = current_user.last_bonus_collected + timedelta(hours=12) - now
+        hours, remainder = divmod(remaining_time.seconds, 3600)
+        minutes, _ = divmod(remainder, 60)
+        return jsonify(success=False, message=f"Bonus available in {hours} hours and {minutes} minutes.")
 
-    bonus_collection_times[user_id] = now
+    current_user.last_bonus_collected = now
     current_user.saldo += 300
-    print(current_user.saldo)
     db.session.commit()
+
     return jsonify(success=True, new_saldo=current_user.saldo)
+
 
 
 @views.route('/play_game', methods=["POST"])
@@ -121,3 +122,18 @@ def play_game():
         return jsonify({"success": True}), 200
     else:
         return jsonify({"success": False, "message": "Insufficient balance"}), 400
+
+
+@views.route('/bonus_status', methods=['GET'])
+@login_required
+def bonus_status():
+    return jsonify(
+        success=True,
+        last_bonus_collected=current_user.last_bonus_collected
+    )
+
+@views.route('/delete_history', methods=["DELETE"])
+@login_required
+def delete_history():
+    pass
+
