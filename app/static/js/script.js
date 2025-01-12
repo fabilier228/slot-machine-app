@@ -13,7 +13,6 @@
     "🍎"
   ];
 
-  const COST_PER_GAME = 15; // Cost for one game
   const multipliers = {
     "7️⃣": 10,
     "❌": 0,
@@ -31,6 +30,7 @@
   const doors = document.querySelectorAll(".door");
   const spinButton = document.querySelector("#spinner");
   const resetButton = document.querySelector("#reseter");
+  const stakeInput = document.querySelector("#stake-input"); // New input element
 
   spinButton.disabled = false;
 
@@ -38,31 +38,33 @@
   document.querySelector("#reseter").addEventListener("click", resetGame);
 
   async function spin() {
+    // Get stake value from the input field
+    const stake = parseInt(stakeInput.value);
     const currentSaldo = parseInt(saldoDisplay.textContent.replace("Saldo: $", ""));
 
-    if (currentSaldo < COST_PER_GAME) {
+    if (currentSaldo < stake) {
       updateDisplayResult("Brak wystarczających środków, aby zagrać!");
       return;
     }
 
     // Deduct game cost
-    saldoDisplay.textContent = `Saldo: $${currentSaldo - COST_PER_GAME}`;
+    saldoDisplay.textContent = `Saldo: $${currentSaldo - stake}`;
     displayResult.innerHTML = ""; // Clear previous results
 
     fetch("/play_game", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      cost: COST_PER_GAME,  // Koszt gry
-    }),
-  })
-    .then((response) => response.json())
-    .catch((error) => {
-      console.error("Error:", error);
-      info.textContent = "Błąd komunikacji z serwerem!";
-    });
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        cost: stake,
+      }),
+    })
+      .then((response) => response.json())
+      .catch((error) => {
+        console.error("Error:", error);
+        updateDisplayResult("Błąd komunikacji z serwerem!");
+      });
 
     init(false, 1, 2);
 
@@ -82,18 +84,17 @@
     if (results.every((val) => val === results[0])) {
       const symbol = results[0];
       const multiplier = multipliers[symbol] || 0;
-      const winnings = COST_PER_GAME * multiplier;
-
-      // Send result to the backend
-      sendWinToBackend(winnings, symbol);
+      const winnings = stake * multiplier;
 
       // Update result display
       updateDisplayResult(`Congratulations, you won $${winnings}! 🎉`);
     } else {
+      const symbol = results[0];
+      sendWinToBackend(0, symbol);
       updateDisplayResult("Spróbuj ponownie!");
     }
-
-    spinButton.disabled = true
+    spinButton.disabled = true;
+    console.log(spinButton.disabled)
   }
 
   function resetGame() {
@@ -174,22 +175,17 @@
     fetch("/update_saldo", {
       method: "POST",
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({
         winnings: winnings,
-        cost: COST_PER_GAME,
-        symbol: symbol
-      })
+        cost: stakeInput.value, // Use the stake value from the input
+        symbol: symbol,
+      }),
     })
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.success) {
-          saldoDisplay.textContent = `Saldo: $${data.new_saldo}`;
-          updateDisplayResult(`Congratulations, you won $${winnings}! 🎉`);
-        } else {
-          updateDisplayResult("Błąd aktualizacji salda!");
-        }
+      .then((response) => {
+        response.json()
+        console.log("wyslano")
       })
       .catch((error) => {
         console.error("Error updating saldo:", error);
@@ -197,12 +193,11 @@
       });
   }
 
-
   function updateDisplayResult(message) {
     // Update the content of the display-result div
     setTimeout(() => {
       displayResult.innerHTML = `<p>${message}</p>`;
-    },2150)
+    }, 2150);
   }
 
   init();

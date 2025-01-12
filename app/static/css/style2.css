@@ -26,6 +26,7 @@ button {
 .navbar-left, .navbar-right {
     display: flex;
     align-items: center;
+    flex-direction: column;
 }
 
 .btn-logout {
@@ -36,6 +37,11 @@ button {
     cursor: pointer;
     font-size: 16px;
     border-radius: 5px;
+}
+
+.btn-logout a{
+    text-decoration: none;
+    color: white;
 }
 
 .btn-logout:hover {
@@ -143,8 +149,9 @@ button {
 
 
 .bonus-section {
-  margin: 20px auto;
+  /*margin: 20px auto;*/
   text-align: center;
+    margin-top: 10px;
 }
 
 .bonus-btn {
@@ -205,16 +212,208 @@ button:disabled {
 }
 
 .cost-info {
-  font-size: 40px;
-  color: white;              /* Biały tekst */
-  font-weight: bold;         /* Pogrubienie tekstu */
-  padding: 10px 20px;        /* Wewnętrzne odstępy */
-  border-radius: 5px;        /* Zaokrąglone rogi */
-  text-align: center;        /* Wyśrodkowanie tekstu */
-  margin: 20px;       /* Odstęp od innych elementów poniżej */
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Cień pod elementem */
-  transition: transform 0.2s ease, background-color 0.3s ease; /* Animacja zmiany tła i rozmiaru */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  color: #fff;
+  font-family: Arial, sans-serif;
+    margin: 20px;
 }
+
+
+
+.cost-info label {
+  margin-right: 10px;
+  font-size: 30px;
+  font-weight: bold;
+  color: #fff;
+}
+
+/* Style for the stake input */
+#stake-input {
+  width: 120px; /* Set width for consistency */
+  padding: 8px;
+  font-size: 16px;
+  border-radius: 5px;
+  border: 2px solid #ccc;
+  background-color: #f9f9f9;
+  color: #333;
+  margin-right: 10px;
+  transition: border-color 0.3s, background-color 0.3s;
+}
+
+/* Add a focus effect when user clicks on input */
+#stake-input:focus {
+  border-color: #007bff;
+  background-color: #e9f7fe;
+  outline: none;
+}
+
+/* Style for the span that shows the currency */
+.cost-info span {
+  font-size: 16px;
+  color: #fff;
+  margin-left: 10px;
+}
+
+/* Center the profile container */
+.profile-container {
+    width: 80%;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px;
+    text-align: center;
+}
+
+/* Styling the title */
+.profile-container h1 {
+    font-size: 2.5rem;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+/* Styling the photo section */
+.photo img {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 50%;
+    margin: 20px 0;
+}
+
+/* Styling for the profile info */
+.profile-info p {
+    font-size: 1.2rem;
+    line-height: 1.6;
+    color: #555;
+}
+
+/* Styling for the game history table */
+.history-table {
+    width: 100%;
+    margin-top: 30px;
+    border-collapse: collapse;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.history-table th,
+.history-table td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+.history-table th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+}
+
+.history-table tr:hover {
+    background-color: #f1f1f1;
+}
+
+.history-table td {
+    color: #555;
+}
+
+/* Optional button styles for actions (delete button or others) */
+button {
+    padding: 10px 20px;
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+button:hover {
+    background-color: #c82333;
+}
+
+/* Ensure the page is responsive */
+@media (max-width: 768px) {
+    .profile-container {
+        width: 90%;
+    }
+
+    .profile-container h1 {
+        font-size: 2rem;
+    }
+
+    .profile-info p {
+        font-size: 1rem;
+    }
+
+    .history-table {
+        font-size: 0.9rem;
+    }
+
+    .photo img {
+        width: 120px;
+        height: 120px;
+    }
+}
+
+
+.go-gaming {
+    background-color: #ff6f61; /* Bold, attention-grabbing color */
+    color: white;
+    padding: 15px 30px; /* Larger padding for a prominent button */
+    font-size: 1.5rem;
+    font-weight: bold;
+    border: none;
+    border-radius: 50px; /* Sharp rounded edges */
+    text-transform: uppercase; /* Make the text uppercase for emphasis */
+    cursor: pointer;
+    transition: all 0.3s ease; /* Smooth hover effect transition */
+    text-align: center;
+}
+
+.go-gaming a {
+    color: white;
+    text-decoration: none; /* Remove underline from the link */
+    display: block; /* Make the link fill the button */
+    width: 100%;
+    height: 100%;
+}
+
+.go-gaming:hover {
+    background-color: #e44d3a; /* Darker shade on hover */
+    transform: scale(1.1); /* Slightly enlarge the button when hovered */
+}
+
+.go-gaming:active {
+    transform: scale(1); /* Return to original size when clicked */
+}
+
+.go-gaming:focus {
+    outline: none; /* Remove default focus outline */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Add a soft shadow on focus */
+}
+
+.go-gaming a:hover {
+    color: #fff; /* Ensure the text color stays white when hovered */
+}
+
+.ref-profile {
+    width: 35px; /* Adjust width as needed */
+    height: 35px; /* Adjust height as needed */
+    border-radius: 50%; /* Makes the image round */
+    object-fit: cover; /* Ensures the image covers the circle without distortion */
+    border: 3px solid #fff; /* Optional: Adds a border around the image for a clean effect */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional: Adds a subtle shadow for depth */
+}
+
+
+.loggings {
+    display: flex;
+    gap: 6px;
+}
+
 
 
 

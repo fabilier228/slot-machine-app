@@ -12,8 +12,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const now = Date.now();
     if (lastCollected) {
       const timeElapsed = now - parseInt(lastCollected, 10);
-      // const remainingTime = COOLDOWN_HOURS * 3600 * 1000 - timeElapsed;
-      const remainingTime = 0;
+      const remainingTime = COOLDOWN_HOURS * 3600 * 1000 - timeElapsed;
 
       if (remainingTime > 0) {
         const hours = Math.floor(remainingTime / 3600000);
