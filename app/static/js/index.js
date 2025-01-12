@@ -5,26 +5,35 @@ document.addEventListener("DOMContentLoaded", () => {
   const bonusInfo = document.querySelector(".bonus-info");
   const saldoDisplay = document.querySelector(".saldo-display");
 
-  // Fetch the last collected time from the server or local storage
-  let lastCollected = localStorage.getItem("lastCollected");
+  // Fetch user bonus status from the server
+  function fetchBonusStatus() {
+    fetch("/bonus_status")
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.success) {
+          const now = new Date();
+          const lastCollected = new Date(data.last_bonus_collected);
+          const timeElapsed = now - lastCollected;
+          const remainingTime = COOLDOWN_HOURS * 3600 * 1000 - timeElapsed;
 
-  function updateButtonState() {
-    const now = Date.now();
-    if (lastCollected) {
-      const timeElapsed = now - parseInt(lastCollected, 10);
-      const remainingTime = COOLDOWN_HOURS * 3600 * 1000 - timeElapsed;
-
-      if (remainingTime > 0) {
-        const hours = Math.floor(remainingTime / 3600000);
-        const minutes = Math.floor((remainingTime % 3600000) / 60000);
-        bonusButton.disabled = true;
-        bonusInfo.textContent = `Bonus available in ${hours}h ${minutes}m`;
-        return;
-      }
-    }
-
-    bonusButton.disabled = false;
-    bonusInfo.textContent = "Bonus available! Collect now.";
+          if (remainingTime > 0) {
+            const hours = Math.floor(remainingTime / 3600000);
+            const minutes = Math.floor((remainingTime % 3600000) / 60000);
+            bonusButton.disabled = true;
+            bonusInfo.textContent = `Bonus available in ${hours}h ${minutes}m`;
+          } else {
+            bonusButton.disabled = false;
+            bonusInfo.textContent = "Bonus available! Collect now.";
+          }
+        } else {
+          bonusButton.disabled = true;
+          bonusInfo.textContent = "Error fetching bonus status.";
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching bonus status:", error);
+        bonusInfo.textContent = "Failed to connect to server.";
+      });
   }
 
   // Handle bonus collection
@@ -39,12 +48,11 @@ document.addEventListener("DOMContentLoaded", () => {
       .then((response) => response.json())
       .then((data) => {
         if (data.success) {
-          lastCollected = Date.now();
-          localStorage.setItem("lastCollected", lastCollected);
+          saldoDisplay.textContent = `Saldo: $${data.new_saldo}`;
           bonusInfo.textContent = `Successfully collected $${BONUS_AMOUNT}!`;
-          updateButtonState();
+          fetchBonusStatus(); // Update bonus state
         } else {
-          bonusInfo.textContent = "Failed to collect bonus. Try again later.";
+          bonusInfo.textContent = data.message || "Failed to collect bonus. Try again later.";
         }
       })
       .catch((error) => {
@@ -53,10 +61,7 @@ document.addEventListener("DOMContentLoaded", () => {
       });
   });
 
-  const currentSaldo = parseInt(saldoDisplay.textContent.replace("Saldo: $", ""));
-  saldoDisplay.textContent = `Saldo: $${currentSaldo}`;
-
   // Initialize button state on page load
-  updateButtonState();
-  setInterval(updateButtonState, 60000); // Update button state every minute
+  fetchBonusStatus();
+  setInterval(fetchBonusStatus, 60000); // Update bonus status every minute
 });
