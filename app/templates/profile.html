@@ -1,0 +1,45 @@
+{% extends "main_layout.html" %}
+
+{% block title %}
+    Profile
+{% endblock %}
+
+{% block content %}
+    <div class="profile-container">
+        <h1>Welcome, {{ current_user.username }}</h1>
+
+        <!-- Profile Photo Section -->
+        <div class="photo">
+            <img src="../static/public/avatar.avif" alt="User Avatar" />
+        </div>
+
+        <!-- User Information -->
+        <div class="profile-info">
+            <p><strong>Email:</strong> {{ current_user.email }}</p>
+            <p><strong>Username:</strong> {{ current_user.username }}</p>
+        </div>
+
+        <!-- Game History Section -->
+        <h3>Your Game History</h3>
+        {% if game_history %}
+            <table class="history-table">
+                <thead>
+                    <tr>
+                        <th>Game Date</th>
+                        <th>Result</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for game in game_history %}
+                        <tr>
+                            <td>{{ game.timestamp }}</td>
+                            <td>{{ game.result }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p>No game history available.</p>
+        {% endif %}
+    </div>
+{% endblock %}
