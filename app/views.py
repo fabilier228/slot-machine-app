@@ -1,10 +1,12 @@
 from flask import Blueprint, render_template, request, jsonify
 from flask_login import login_required, current_user
+from sqlalchemy import desc
 from paramiko.client import SSHClient
 from datetime import datetime, timedelta
 from . import db
 from .models import GameLog
 import paramiko
+
 
 def get_who_from_server():
     HOSTNAME = "sigma.ug.edu.pl"
@@ -20,7 +22,6 @@ def get_who_from_server():
 
         with open(PRIVATE_KEY_PATH, "r") as key:
             private_key = paramiko.RSAKey.from_private_key(key)
-
 
         client.connect(HOSTNAME, port=PORT, username=USER, pkey=private_key)
 
@@ -38,6 +39,7 @@ def get_who_from_server():
     except Exception as err:
         print(err)
 
+
 views = Blueprint('views', __name__)
 
 bonus_collection_times = {}
@@ -50,19 +52,37 @@ def main():
     current_online = get_who_from_server()
     return render_template("main.html", user=current_user, saldo=saldo, online_people=current_online)
 
+
 @views.route('/')
 def home():
     return render_template("home.html")
+
+
+@views.route('/profile')
+def profile_page():
+    saldo = current_user.saldo
+    current_online = get_who_from_server()
+
+    user_history = GameLog.query.filter_by(user_id=current_user.id).order_by(desc(GameLog.timestamp)).limit(20).all()
+
+    return render_template('profile.html', game_history=user_history, saldo=saldo, online_people=current_online)
+
 
 @views.route('/update_saldo', methods=["POST"])
 @login_required
 def update_saldo():
     data = request.get_json()
     winnings = data.get('winnings', 0)
-
     if winnings:
+        print("wchodzi w baze")
         current_user.saldo += winnings
-        game_log = GameLog(user_id=current_user.id, result=winnings, timestamp=datetime.now)
+        game_log = GameLog(user_id=current_user.id, result=winnings, timestamp=datetime.now())
+        db.session.add(game_log)
+        db.session.commit()
+
+    else:
+
+        game_log = GameLog(user_id=current_user.id, result=0, timestamp=datetime.now())
         db.session.add(game_log)
         db.session.commit()
 
@@ -89,6 +109,7 @@ def collect_bonus():
     db.session.commit()
     return jsonify(success=True, new_saldo=current_user.saldo)
 
+
 @views.route('/play_game', methods=["POST"])
 @login_required
 def play_game():
@@ -96,7 +117,6 @@ def play_game():
     cost = data.get("cost")
     if current_user.saldo >= cost:
         current_user.saldo -= cost
-        print(current_user.saldo)
         db.session.commit()
         return jsonify({"success": True}), 200
     else:
