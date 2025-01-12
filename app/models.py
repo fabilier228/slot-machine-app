@@ -9,6 +9,7 @@ class User(db.Model, UserMixin):
     email = db.Column(db.String(100), nullable=False, unique=True)
     saldo = db.Column(db.Float(), nullable=False, default=0.0)
     games = db.relationship("GameLog")
+    last_bonus_collected = db.Column(db.DateTime, default=None)
 
 
 class GameLog(db.Model):
