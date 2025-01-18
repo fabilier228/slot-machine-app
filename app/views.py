@@ -43,26 +43,10 @@ def get_who_from_server():
         print(err)
 
 
-def get_advertisement_from_json():
-    with open('adverts.json', 'r', encoding='utf-8') as f:
-        ads = json.load(f)
-        ad = random.choice(ads)
-        return ad['description']
-
-def generate_advertisements():
-    while True:
-        ad = get_advertisement_from_json()
-        yield f"data: {ad}\n\n"
-        time.sleep(5)
-
 views = Blueprint('views', __name__)
 
 
 bonus_collection_times = {}
-
-@views.route('/events/datetime')
-def stream():
-    return Response(generate_advertisements(), content_type='text/event-stream')
 
 
 @views.route('/main', methods=["GET", "POST"])
