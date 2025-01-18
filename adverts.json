@@ -1,0 +1,11 @@
+[
+    {"multiplier": "7️⃣", "value": 25, "description": "Hit the jackpot with 25x multiplier! Land the lucky '7️⃣' and get a huge reward!"},
+    {"multiplier": "❌", "value": 0, "description": "Oops! You hit ❌! No multiplier this time, better luck next spin."},
+    {"multiplier": "🍓", "value": 5, "description": "A tasty 5x multiplier for the 🍓! Every win counts more with this fruity reward!"},
+    {"multiplier": "🍋", "value": 3, "description": "Lemon time! 🍋 Boost your rewards by 3x with this citrus multiplier!"},
+    {"multiplier": "🍉", "value": 13, "description": "Sweeten your win with a 13x multiplier from the 🍉!"},
+    {"multiplier": "🍒", "value": 6, "description": "Juicy 🍒 multiplier of 6x! A sweet reward for your winning spin!"},
+    {"multiplier": "💵", "value": 200, "description": "Get the 💵 multiplier for a massive 200x boost on your winnings! Big money ahead!"},
+    {"multiplier": "🍊", "value": 2, "description": "Fresh 🍊 for a 2x multiplier! Add some zest to your spin!"},
+    {"multiplier": "🍎", "value": 1, "description": "An apple a day gives you a 1x multiplier. Simple, but sweet!"}
+]
