@@ -1,11 +1,14 @@
-from flask import Blueprint, render_template, request, jsonify
+from flask import Blueprint, render_template, request, jsonify, Response
 from flask_login import login_required, current_user
 from sqlalchemy import desc
 from paramiko.client import SSHClient
 from datetime import datetime, timedelta
+from .models import GameLog, User
 from . import db
-from .models import GameLog
 import paramiko
+import json
+import time
+import random
 
 
 def get_who_from_server():
@@ -40,9 +43,26 @@ def get_who_from_server():
         print(err)
 
 
+def get_advertisement_from_json():
+    with open('adverts.json', 'r', encoding='utf-8') as f:
+        ads = json.load(f)
+        ad = random.choice(ads)
+        return ad['description']
+
+def generate_advertisements():
+    while True:
+        ad = get_advertisement_from_json()
+        yield f"data: {ad}\n\n"
+        time.sleep(5)
+
 views = Blueprint('views', __name__)
 
+
 bonus_collection_times = {}
+
+@views.route('/events/datetime')
+def stream():
+    return Response(generate_advertisements(), content_type='text/event-stream')
 
 
 @views.route('/main', methods=["GET", "POST"])
@@ -74,9 +94,20 @@ def ranking_page():
     saldo = current_user.saldo
     current_online = get_who_from_server()
 
-    best_wins = GameLog.query.order_by(desc(GameLog.result)).limit(25).all()
+    search_query = request.args.get('search', '')
 
-    return render_template('ranking.html', biggest_wins=best_wins, saldo=saldo, online_people=current_online)
+    if search_query:
+        best_wins = GameLog.query.join(User).filter(
+            User.username.like(f"%{search_query}%")
+        ).order_by(desc(GameLog.result)).limit(25).all()
+    else:
+        best_wins = GameLog.query.order_by(desc(GameLog.result)).limit(25).all()
+
+    user_ids = [win.user_id for win in best_wins]
+    users = {user.id: user.username for user in User.query.filter(User.id.in_(user_ids)).all()}
+
+    return render_template('ranking.html', biggest_wins=best_wins, saldo=saldo, online_people=current_online,
+                           users=users, search=search_query)
 
 
 @views.route('/update_saldo', methods=["POST"])
@@ -85,7 +116,6 @@ def update_saldo():
     data = request.get_json()
     winnings = data.get('winnings', 0)
     if winnings:
-        print("wchodzi w baze")
         current_user.saldo += winnings
         game_log = GameLog(user_id=current_user.id, result=winnings, timestamp=datetime.now())
         db.session.add(game_log)
@@ -157,6 +187,26 @@ def delete_history():
         print(f"Error deleting history: {e}")
 
         return jsonify({"error": "Failed to delete history."}), 500
+
+
+@views.route('/update_username', methods=["UPDATE"])
+@login_required
+def update_username():
+    data = request.get_json()
+    username = data.get("newUsername")
+
+    if not username:
+        print("nie ma nazwy")
+        return jsonify({"error": "Username required"}), 400
+
+    user = User.query.get(current_user.id)
+    user.username = username
+    print(user.username)
+
+    db.session.commit()
+    return jsonify({"success": "Username Updated"}), 200
+
+
 
 
 
