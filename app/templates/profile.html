@@ -18,6 +18,11 @@
             <p><strong>Email:</strong> {{ current_user.email }}</p>
             <p><strong>Username:</strong> {{ current_user.username }}</p>
         </div>
+        <div class="update-user">
+            <label for="update-input">Enter new username:</label>
+            <input type="text" id="update-input" class="form-control" placeholder="Type here..." />
+            <button id="update-button" class="btn btn-primary mt-2">Update</button>
+        </div>
 
         <!-- Game History Section -->
         <h3>Your Game History</h3>

@@ -8,6 +8,11 @@
 <div class="container mt-4">
     <h1 class="text-center">Ranking Najlepszych Wygranych</h1>
 
+    <form method="GET" action="{{ url_for('views.ranking_page') }}">
+        <input type="text" name="search" placeholder="Search..." value="{{ request.args.get('search', '') }}">
+        <button type="submit">Search</button>
+    </form>
+
     {% if biggest_wins %}
         <table class="table table-bordered table-striped mt-4">
             <thead class="table-dark">
@@ -22,7 +27,7 @@
                 {% for win in biggest_wins %}
                     <tr>
                         <td>{{ loop.index }}</td>
-                        <td>{{ win.user_id }}</td>
+                        <td>{{ users[win.user_id] }}</td>
                         <td>{{ win.result }}</td>
                         <td>{{ win.timestamp.strftime('%Y-%m-%d %H:%M:%S') }}</td>
                     </tr>
