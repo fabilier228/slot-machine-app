@@ -1,0 +1,36 @@
+{% extends "main_layout.html" %}
+
+{% block title %}
+    Ranking Najlepszych Wygranych
+{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1 class="text-center">Ranking Najlepszych Wygranych</h1>
+
+    {% if biggest_wins %}
+        <table class="table table-bordered table-striped mt-4">
+            <thead class="table-dark">
+                <tr>
+                    <th>#</th>
+                    <th>Użytkownik</th>
+                    <th>Wynik</th>
+                    <th>Data</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for win in biggest_wins %}
+                    <tr>
+                        <td>{{ loop.index }}</td>
+                        <td>{{ win.user_id }}</td>
+                        <td>{{ win.result }}</td>
+                        <td>{{ win.timestamp.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p class="text-center mt-4">Brak wyników do wyświetlenia.</p>
+    {% endif %}
+</div>
+{% endblock %}

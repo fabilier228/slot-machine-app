@@ -59,6 +59,7 @@ def home():
 
 
 @views.route('/profile')
+@login_required
 def profile_page():
     saldo = current_user.saldo
     current_online = get_who_from_server()
@@ -66,6 +67,16 @@ def profile_page():
     user_history = GameLog.query.filter_by(user_id=current_user.id).order_by(desc(GameLog.timestamp)).limit(20).all()
 
     return render_template('profile.html', game_history=user_history, saldo=saldo, online_people=current_online)
+
+@views.route('/ranking')
+@login_required
+def ranking_page():
+    saldo = current_user.saldo
+    current_online = get_who_from_server()
+
+    best_wins = GameLog.query.order_by(desc(GameLog.result)).limit(25).all()
+
+    return render_template('ranking.html', biggest_wins=best_wins, saldo=saldo, online_people=current_online)
 
 
 @views.route('/update_saldo', methods=["POST"])
@@ -135,5 +146,18 @@ def bonus_status():
 @views.route('/delete_history', methods=["DELETE"])
 @login_required
 def delete_history():
-    pass
+    try:
+        user_id = current_user.id
+        GameLog.query.filter_by(user_id=user_id).delete()
+
+        db.session.commit()
+
+        return jsonify({"message": "History deleted successfully."}), 200
+    except Exception as e:
+        print(f"Error deleting history: {e}")
+
+        return jsonify({"error": "Failed to delete history."}), 500
+
+
+
 
