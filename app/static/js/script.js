@@ -2,25 +2,24 @@
   "use strict";
 
   const items = [
-    "7️⃣",
-    "❌",
-    "🍓",
-    "🍋",
-    "🍉",
-    "🍒",
-    "💵",
-    "🍊",
-    "🍎"
-  ];
+  "7️⃣", "7️⃣", "7️⃣", "7️⃣",
+  "🍓", "🍓", "🍓", "🍓", "🍓", "🍓",
+  "🍋", "🍋",
+  "🍉", "🍉", "🍉", "🍉", "🍉", "🍉", "🍉", "🍉",
+  "🍒", "🍒", "🍒", "🍒",
+  "💵", "💵", "💵",
+  "🍊", "🍊",
+  "🍎", "🍎", "🍎", "🍎", "🍎", "🍎", "🍎", "🍎"
+];
 
   const multipliers = {
-    "7️⃣": 10,
+    "7️⃣": 25,
     "❌": 0,
     "🍓": 5,
     "🍋": 3,
-    "🍉": 4,
+    "🍉": 13,
     "🍒": 6,
-    "💵": 20,
+    "💵": 200,
     "🍊": 2,
     "🍎": 1
   };
@@ -80,12 +79,11 @@
       results.push(visibleBox.textContent);
     }
 
-    // Check if all results are the same
     if (results.every((val) => val === results[0])) {
       const symbol = results[0];
       const multiplier = multipliers[symbol] || 0;
       const winnings = stake * multiplier;
-
+      sendWinToBackend(winnings, symbol);
       // Update result display
       updateDisplayResult(`Congratulations, you won $${winnings}! 🎉`);
     } else {

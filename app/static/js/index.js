@@ -4,6 +4,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const bonusButton = document.getElementById("collect-bonus");
   const bonusInfo = document.querySelector(".bonus-info");
   const saldoDisplay = document.querySelector(".saldo-display");
+  const deleteHistoryButton = document.getElementById("delete-history")
 
   // Fetch user bonus status from the server
   function fetchBonusStatus() {
@@ -61,7 +62,30 @@ document.addEventListener("DOMContentLoaded", () => {
       });
   });
 
-  // Initialize button state on page load
   fetchBonusStatus();
-  setInterval(fetchBonusStatus, 60000); // Update bonus status every minute
+  setInterval(fetchBonusStatus, 60000);
+
+  function deleteHistory() {
+    fetch('/delete_history', {
+        method: "DELETE",
+        headers: {
+            "Content-Type": "application/json",
+        }
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`Server error: ${response.status}`);
+        }
+        return response.json();
+    })
+    .catch(error => {
+        console.error("Error deleting history:", error);
+    });
+  }
+
+  deleteHistoryButton.addEventListener('click', () => {
+    deleteHistory()
+  })
+
+
 });
