@@ -4,11 +4,13 @@ from os import path
 from flask_bcrypt import Bcrypt
 from flask_login import LoginManager
 from flask_migrate import Migrate
+from flask_socketio import SocketIO
 
 db = SQLAlchemy()
 DB_NAME = "database.db"
 bcrypt = Bcrypt()
 migrate = Migrate()
+socketio = SocketIO()
 
 def create_app():
     app = Flask(__name__)
@@ -17,13 +19,15 @@ def create_app():
 
     db.init_app(app)
     migrate = Migrate(app, db)
-
+    socketio.init_app(app)
 
     from .views import views
     from .auth import auth
+    from .sockets import sockets
 
     app.register_blueprint(views, url_prefix='/')
     app.register_blueprint(auth, url_prefix='/')
+    app.register_blueprint(sockets, url_prefix='/')
 
     from .models import User, GameLog
 
