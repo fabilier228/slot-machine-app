@@ -22,17 +22,6 @@ def generate_advertisements():
 @socketio.on('connect')
 def connect_user():
     print("connected")
-    # users = User.query.all()
-    #
-    # while True:
-    #     winner = random.choice(users)
-    #     amount_won = random.randint(1, 50000)
-    #
-    #     message = f"🎉 {winner.username} won {amount_won} coins! 🎉"
-    #
-    #     socketio.emit('new_winner', {'message': message})
-    #     time.sleep(5)
-    #
 
 @socketio.on('event')
 def send_random_user_win():
