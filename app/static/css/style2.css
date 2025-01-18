@@ -475,3 +475,73 @@ p.text-center {
     border-radius: 8px;
 }
 
+/* Style for the update-user container */
+.update-user {
+    margin: 20px auto;
+    padding: 15px;
+    max-width: 400px;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+/* Label styling */
+.update-user label {
+    display: block;
+    font-size: 1rem;
+    color: #333;
+    margin-bottom: 8px;
+    text-align: left;
+}
+
+/* Input field styling */
+.update-user input[type="text"] {
+    width: calc(100% - 20px);
+    padding: 10px;
+    margin-bottom: 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 1rem;
+}
+
+/* Input field focus effect */
+.update-user input[type="text"]:focus {
+    outline: none;
+    border-color: #4CAF50;
+    box-shadow: 0 0 4px rgba(76, 175, 80, 0.4);
+}
+
+/* Button styling */
+.update-user button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 1rem;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+/* Button hover effect */
+.update-user button:hover {
+    background-color: #45a049;
+}
+
+/* Button focus effect */
+.update-user button:focus {
+    outline: none;
+    box-shadow: 0 0 4px rgba(76, 175, 80, 0.4);
+}
+
+/* Small margin for spacing */
+.update-user .mt-2 {
+    margin-top: 12px;
+}
+
+#ad-text {
+    text-align: center;
+}
+
