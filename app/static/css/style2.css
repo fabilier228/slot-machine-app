@@ -415,5 +415,63 @@ button:hover {
 }
 
 
+a {
+    text-decoration: none;
+}
 
+
+/* Tabela stylizacji */
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.table th,
+.table td {
+    text-align: center;
+    padding: 12px;
+    border: 1px solid #ddd;
+}
+
+.table th {
+    background-color: #4CAF50;
+    color: white;
+    font-weight: bold;
+}
+
+.table tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+.table tr:hover {
+    background-color: #e1f5e6;
+}
+
+.table td {
+    font-size: 0.9rem;
+    color: #444;
+}
+
+/* Pozycja rankingowa wyróżniona */
+.table tr:first-child td {
+    font-weight: bold;
+    background-color: #ffeeba;
+}
+
+/* Komunikat o braku wyników */
+p.text-center {
+    font-size: 1.2rem;
+    color: #888;
+    margin-top: 30px;
+}
+
+.container {
+    max-width: 900px;
+    margin: 30px auto;
+    padding: 20px;
+    background: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
 
