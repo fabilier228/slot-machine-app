@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>{% block title %}Slot Machine{% endblock %}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style2.css') }}">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js" integrity="sha512-q/dWJ3kcmjBLU4Qc47E4A9kTB4m3wuTY7vkFJDTZKjTs8jhyGQnaUrxa0Ytd0ssMZhbNua9hE+E7Qv1j+DyZwA==" crossorigin="anonymous"></script>
 
 </head>
 <body>
@@ -39,10 +39,12 @@
 </header>
 
 <div class="content">
+    <div id="winner-message" style="position: fixed; top: 18%; left: 2%; z-index: 1000;"></div>
     {% block content %}{% endblock %}
 </div>
 <script src="../static/js/index.js"></script>
 <script src="../static/js/script.js"></script>
+<script src="../static/js/http.js"></script>
 <script src="../static/js/socket.js"></script>
 </body>
 </html>
