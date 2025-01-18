@@ -5,6 +5,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const bonusInfo = document.querySelector(".bonus-info");
   const saldoDisplay = document.querySelector(".saldo-display");
   const deleteHistoryButton = document.getElementById("delete-history")
+  const updateInput = document.querySelector("#update-input")
+  const updateButton = document.querySelector('#update-button')
 
   // Fetch user bonus status from the server
   function fetchBonusStatus() {
@@ -37,6 +39,45 @@ document.addEventListener("DOMContentLoaded", () => {
       });
   }
 
+  function deleteHistory() {
+    fetch('/delete_history', {
+        method: "DELETE",
+        headers: {
+            "Content-Type": "application/json",
+        }
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`Server error: ${response.status}`);
+        }
+        return response.json();
+    })
+    .catch(error => {
+        console.error("Error deleting history:", error);
+    });
+  }
+
+  function updateUsername() {
+      const inputUpdateValue = updateInput.value
+      console.log(inputUpdateValue)
+
+      fetch('/update_username', {
+            method: 'UPDATE',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ newUsername: inputUpdateValue }),
+        })
+            .then((response) => response.json())
+            .catch((error) => {
+                console.error('Error:', error);
+                alert('An error occurred while updating.');
+            });
+  }
+
+
+
+
   // Handle bonus collection
   bonusButton.addEventListener("click", () => {
     fetch("/collect_bonus", {
@@ -65,27 +106,13 @@ document.addEventListener("DOMContentLoaded", () => {
   fetchBonusStatus();
   setInterval(fetchBonusStatus, 60000);
 
-  function deleteHistory() {
-    fetch('/delete_history', {
-        method: "DELETE",
-        headers: {
-            "Content-Type": "application/json",
-        }
-    })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error(`Server error: ${response.status}`);
-        }
-        return response.json();
-    })
-    .catch(error => {
-        console.error("Error deleting history:", error);
-    });
-  }
-
   deleteHistoryButton.addEventListener('click', () => {
     deleteHistory()
   })
+    updateButton.addEventListener('click', () => {
+    updateUsername()
+    })
+
 
 
 });
